@@ -53,3 +53,5 @@ describe("When Modal data is created", () => {
     });
   });
 });
+ 
+// Rajouter un test (fermer la modale au clique en dehors de celle-ci)

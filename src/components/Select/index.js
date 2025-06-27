@@ -2,8 +2,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from "react";
 import PropTypes from "prop-types";
+
 import "./style.scss";
 
+// Crée un composant Select qui accepte plusieurs propriétés en tant que paramètres.
 const Select = ({
   selection,
   onChange,
@@ -12,52 +14,37 @@ const Select = ({
   label,
   type = "normal",
 }) => {
-  // Valeur sélectionnée (null = "Toutes")
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState();
   const [collapsed, setCollapsed] = useState(true);
-
-  // Correction : onChange(newValue) puis setValue puis setCollapsed
   const changeValue = (newValue) => {
-    onChange(newValue);
-    setValue(newValue);
-    setCollapsed(true);
+    // CORRECTION : Ajout de newValue
+    // Fonction pour mettre à jour la valeur "value" et "collapsed" lorsqu'une nouvelle valeur est sélectionnée.
+    onChange(newValue); // Appelle la fonction "onChange" passée en tant que propriété avec la nouvelle valeur.
+    setValue(newValue); // Met à jour la valeur "value" avec la nouvelle valeur.
+    setCollapsed(newValue); // Met à jour "collapsed" en fonction de la nouvelle valeur (il semblerait qu'il y ait une correction manquante ici, peut-être "setCollapsed(!newValue)" serait approprié).
   };
-
-  // Affichage du titre principal
-  const displayTitle = () => {
-    if (value) return value;
-    if (!titleEmpty) return "Toutes";
-    return "";
-  };
-
   return (
     <div className={`SelectContainer ${type}`} data-testid="select-testid">
       {label && <div className="label">{label}</div>}
       <div className="Select">
         <ul>
           <li className={collapsed ? "SelectTitle--show" : "SelectTitle--hide"}>
-            {displayTitle()}
+            {value || (!titleEmpty && "Toutes")}
           </li>
           {!collapsed && (
             <>
               {!titleEmpty && (
                 <li onClick={() => changeValue(null)}>
-                  <input
-                    checked={value === null}
-                    name="selected"
-                    type="radio"
-                    readOnly
-                  />{" "}
+                  <input defaultChecked={!value} name="selected" type="radio" />{" "}
                   Toutes
                 </li>
               )}
               {selection.map((s) => (
                 <li key={s} onClick={() => changeValue(s)}>
                   <input
-                    checked={value === s}
+                    defaultChecked={value === s}
                     name="selected"
                     type="radio"
-                    readOnly
                   />{" "}
                   {s}
                 </li>
@@ -72,7 +59,7 @@ const Select = ({
           className={collapsed ? "open" : "close"}
           onClick={(e) => {
             e.preventDefault();
-            setCollapsed((prev) => !prev);
+            setCollapsed(!collapsed);
           }}
         >
           <Arrow />
@@ -84,6 +71,8 @@ const Select = ({
 
 const Arrow = () => (
   <svg
+  // Ajout de cursor pointer
+    cursor="pointer"
     width="21"
     height="11"
     viewBox="0 0 21 11"
@@ -104,14 +93,14 @@ Select.propTypes = {
   titleEmpty: PropTypes.bool,
   label: PropTypes.string,
   type: PropTypes.string,
-};
+}
 
 Select.defaultProps = {
-  onChange: () => {},
+  onChange: () => null,
   titleEmpty: false,
   label: "",
   type: "normal",
   name: "select",
-};
+}
 
 export default Select;

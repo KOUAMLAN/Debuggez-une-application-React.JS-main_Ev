@@ -118,7 +118,10 @@ p {
     color: white;
     text-decoration: none;
     display: inline;
-    margin: 2px;
+    margin: 10px;
+  }
+  a:hover {
+    text-decoration: underline;
   }
   margin-bottom: 50px;
 }

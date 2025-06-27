@@ -4,27 +4,32 @@ import Field, { FIELD_TYPES } from "../../components/Field";
 import Select from "../../components/Select";
 import Button, { BUTTON_TYPES } from "../../components/Button";
 
-const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 1000); })
+// Simule une API de contact
+const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 500); });
 
 const Form = ({ onSuccess, onError }) => {
   const [sending, setSending] = useState(false);
+  const [confirmation, setConfirmation] = useState(""); // Ajout du state
+
   const sendContact = useCallback(
     async (evt) => {
       evt.preventDefault();
       setSending(true);
-      // We try to call mockContactApi
+      setConfirmation(""); // Réinitialise le message à chaque envoi
       try {
         await mockContactApi();
         setSending(false);
-        // Ajout de onSuccess(true)
-        onSuccess(true);
+        setConfirmation("Votre message a bien été envoyé !");
+        onSuccess();
       } catch (err) {
         setSending(false);
+        setConfirmation("Une erreur est survenue. Veuillez réessayer.");
         onError(err);
       }
     },
     [onSuccess, onError]
   );
+
   return (
     <form onSubmit={sendContact}>
       <div className="row">
@@ -32,10 +37,9 @@ const Form = ({ onSuccess, onError }) => {
           <Field placeholder="" label="Nom" />
           <Field placeholder="" label="Prénom" />
           <Select
-          // Correction Typo Personel
-            selection={["Personnel", "Entreprise"]}
+            selection={["Personel", "Entreprise"]}
             onChange={() => null}
-            label="Personnel / Entreprise"
+            label="Personel / Entreprise"
             type="large"
             titleEmpty
           />
@@ -43,6 +47,18 @@ const Form = ({ onSuccess, onError }) => {
           <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
             {sending ? "En cours" : "Envoyer"}
           </Button>
+          {/* Affichage du message de confirmation ou d’erreur */}
+          {confirmation && (
+            <div
+              style={{
+                marginTop: "1em",
+                color: confirmation.startsWith("Votre message") ? "green" : "red",
+                fontWeight: "bold",
+              }}
+            >
+              {confirmation}
+            </div>
+          )}
         </div>
         <div className="col">
           <Field
@@ -59,11 +75,11 @@ const Form = ({ onSuccess, onError }) => {
 Form.propTypes = {
   onError: PropTypes.func,
   onSuccess: PropTypes.func,
-}
+};
 
 Form.defaultProps = {
   onError: () => null,
   onSuccess: () => null,
-}
+};
 
 export default Form;

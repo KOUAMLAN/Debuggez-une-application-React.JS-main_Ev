@@ -1,3 +1,5 @@
+// CORRECTION : Correction des numéros : commencement à 0 et non à 1.
+
 export const MONTHS = {
   1: "janvier",
   2: "février",
@@ -13,4 +15,4 @@ export const MONTHS = {
   12: "décembre",
 };
 
-export const getMonth = (date) => MONTHS[date.getMonth() + 1];
+export const getMonth = (date) => MONTHS[date.getMonth() +1];

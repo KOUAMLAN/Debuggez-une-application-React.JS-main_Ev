@@ -13,11 +13,10 @@ const EventList = () => {
   const { data, error } = useData();
   const [type, setType] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-
-  // Correction : filtrage par type
   const filteredEvents = (
     (!type
       ? data?.events
+      // CORRECTION : Ajout de ".filter" pour filtrer les évenements par catégories
       : data?.events.filter(event => event.type === type)) || []
   ).filter((event, index) => {
     if (
@@ -28,21 +27,12 @@ const EventList = () => {
     }
     return false;
   });
-
   const changeType = (evtType) => {
     setCurrentPage(1);
     setType(evtType);
   };
-
-  // Correction : calcul du nombre de pages sur la liste filtrée
-  const totalFilteredEvents = !type
-    ? data?.events?.length || 0
-    : data?.events?.filter(event => event.type === type).length || 0;
-
-  const pageNumber = Math.ceil(totalFilteredEvents / PER_PAGE);
-
-  const typeList = new Set(data?.events?.map((event) => event.type));
-
+  const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
+  const typeList = new Set(data?.events.map((event) => event.type));
   return (
     <>
       {error && <div>An error occured</div>}
@@ -55,7 +45,7 @@ const EventList = () => {
             selection={Array.from(typeList)}
             onChange={(value) => (value ? changeType(value) : changeType(null))}
           />
-          <div id="events" className="ListContainer">
+          <div id="events" className="ListContainer" > 
             {filteredEvents.map((event) => (
               <Modal key={event.id} Content={<ModalEvent event={event} />}>
                 {({ setIsOpened }) => (

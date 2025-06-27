@@ -10,6 +10,7 @@ import Logo from "../../components/Logo";
 import Icon from "../../components/Icon";
 import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
+import ModalEvent from "../../containers/ModalEvent"; // ajout de modalEvent
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
@@ -22,7 +23,7 @@ const Page = () => {
       <section className="SliderContainer">
         <Slider />
       </section>
-      <section className="ServicesContainer">
+      <section id="ServicesContainer" className="ServicesContainer">
         <h2 className="Title">Nos services</h2>
         <p>Nous organisons des événements sur mesure partout dans le monde</p>
         <div className="ListContainer">
@@ -35,7 +36,7 @@ const Page = () => {
           </ServiceCard>
           <ServiceCard imageSrc="/images/hall-expo.png">
             <h3>Conférences</h3>
-            724 events vous propose d’organiser votre évènement, quelle que soit
+            77 events vous propose d’organiser votre évènement, quelle que soit
             sa taille, en s’adaptant à votre demande et à vos demandes. En tant
             que spécialistes de l’évènementiel, nous saurons trouver le lieu
             parfait ainsi que des solutions inédites pour capter votre audience
@@ -51,11 +52,11 @@ const Page = () => {
           </ServiceCard>
         </div>
       </section>
-      <section className="EventsContainer">
-        <h2 className="Title">Nos réalisations</h2>
+      <section id="EventsContainer" className="EventsContainer">
+        <h2 className="Title" id="realisationTitle" datatest-id="realisationTitle">Nos réalisations</h2>
         <EventList />
       </section>
-      <section className="PeoplesContainer">
+      <section id="PeoplesContainer" className="PeoplesContainer">
         <h2 className="Title">Notre équipe</h2>
         <p>Une équipe d’experts dédiés à l’ogranisation de vos événements</p>
         <div className="ListContainer">
@@ -113,33 +114,48 @@ const Page = () => {
         </Modal>
       </div>
     </main>
-    <footer className="row">
-      <div className="col presta">
-        <h3>Notre derniére prestation</h3>
-        <EventCard
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
-          small
-          label="boom"
-        />
+    <footer data-testid="footer" className="row">
+      { last && ( 
+      // Ajout de last pour afficher la dernière présentation, ajout de modal et modalEvent pour qu'une modale s'ouvre lors du clique 
+      <div data-testid="event-card" className="col presta">
+        <h3>Notre dernière prestation</h3>
+          {!last ? (
+            "Waiting last event..."
+          ) : (
+            <Modal key={last.id} Content={
+            <ModalEvent event={last} />}>
+              {({ setIsOpened }) => (
+                <div data-testid="event-card">
+                  <EventCard
+                    onClick={() => setIsOpened(true)}
+                    imageSrc={last?.cover}
+                    title={last?.title}
+                    date={new Date(last?.date)}
+                    small
+                    label={last?.type}
+                  />
+                </div>
+              )}
+            </Modal>
+          )}
       </div>
+      )}
       <div className="col contact">
         <h3>Contactez-nous</h3>
         <address>45 avenue de la République, 75000 Paris</address>
         <div>01 23 45 67 89</div>
-        <div>contact@724events.com</div>
+        <div>contact@77events.com</div>
         <div>
-          <a href="#twitch">
+          <a target="_blank" rel="noreferrer" href="https://www.twitch.tv/">
             <Icon name="twitch" />
           </a>
-          <a href="#facebook">
+          <a target="_blank" rel="noreferrer" href="https://www.facebook.com/">
             <Icon name="facebook" />
           </a>
-          <a href="#twitter">
+          <a target="_blank" rel="noreferrer" href="https://twitter.com/">
             <Icon name="twitter" />
           </a>
-          <a href="#youtube">
+          <a target="_blank" rel="noreferrer" href="https://www.youtube.com/">
             <Icon name="youtube" />
           </a>
         </div>
