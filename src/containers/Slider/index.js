@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
 import { useData } from "../../contexts/DataContext";
 import { getMonth } from "../../helpers/Date";
-
 import "./style.scss";
 
 const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
 
-  // Correction : tri du plus ancien au plus récent (ordre chronologique)
+  // Tri du plus ancien au plus récent
   const byDateAsc = data?.focus
     ? [...data.focus].sort((evtA, evtB) => new Date(evtA.date) - new Date(evtB.date))
     : [];
 
-  // Correction du nextCard pour éviter la page blanche et boucler correctement
   const dataLength = byDateAsc.length;
 
   useEffect(() => {
-    if (dataLength === 0) return;
+    if (dataLength === 0) return undefined; // Correction ESLint : toujours retourner quelque chose
+
     const timer = setTimeout(() => {
       setIndex((prevIndex) => (prevIndex < dataLength - 1 ? prevIndex + 1 : 0));
     }, 5000);
+
     return () => clearTimeout(timer);
   }, [index, dataLength]);
 
