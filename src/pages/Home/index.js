@@ -21,6 +21,7 @@ const Page = () => {
       <header>
         <Menu />
       </header>
+
       <main>
         <section className="SliderContainer">
           <Slider />
@@ -36,11 +37,11 @@ const Page = () => {
             </ServiceCard>
             <ServiceCard imageSrc="/images/hall-expo.png">
               <h3>Conférences</h3>
-              77 events vous propose d’organiser votre évènement, quelle que soit sa taille...
+              Conférences sur mesure, tous formats.
             </ServiceCard>
             <ServiceCard imageSrc="/images/sophia-sideri-LFXMtUuAKK8-unsplash1.png">
-              <h3>Experience digitale</h3>
-              Notre agence experte en contenus immersifs...
+              <h3>Expérience digitale</h3>
+              Interactivité, immersion et innovation.
             </ServiceCard>
           </div>
         </section>
@@ -56,14 +57,14 @@ const Page = () => {
 
         <section id="PeoplesContainer" className="PeoplesContainer">
           <h2 className="Title">Notre équipe</h2>
-          <p>Une équipe d’experts dédiés à l’organisation de vos événements</p>
+          <p>Une équipe d’experts dédiée à l&apos;organisation de vos événements</p>
           <div className="ListContainer">
-            <PeopleCard imageSrc="/images/stephanie-liverani-Zz5LQe-VSMY-unsplash.png" name="Samira" role="CEO" />
-            <PeopleCard imageSrc="/images/linkedin-sales-solutions-pAtA8xe_iVM-unsplash.png" name="Jean-baptiste" role="Directeur marketing" />
-            <PeopleCard imageSrc="/images/christina-wocintechchat-com-SJvDxw0azqw-unsplash.png" name="Alice" role="CXO" />
-            <PeopleCard imageSrc="/images/jonas-kakaroto-KIPqvvTOC1s-unsplash.png" name="Luís" role="Animateur" />
-            <PeopleCard imageSrc="/images/amy-hirschi-b3AYk8HKCl0-unsplash1.png" name="Christine" role="VP animation" />
-            <PeopleCard imageSrc="/images/christina-wocintechchat-com-0Zx1bDv5BNY-unsplash.png" name="Isabelle" role="VP communication" />
+            <PeopleCard imageSrc="/images/stephanie-liverani-Zz5LQe-VSMY-unsplash.png" name="Samira" position="CEO" />
+            <PeopleCard imageSrc="/images/linkedin-sales-solutions-pAtA8xe_iVM-unsplash.png" name="Jean-baptiste" position="Directeur marketing" />
+            <PeopleCard imageSrc="/images/christina-wocintechchat-com-SJvDxw0azqw-unsplash.png" name="Alice" position="CXO" />
+            <PeopleCard imageSrc="/images/jonas-kakaroto-KIPqvvTOC1s-unsplash.png" name="Luís" position="Animateur" />
+            <PeopleCard imageSrc="/images/amy-hirschi-b3AYk8HKCl0-unsplash1.png" name="Christine" position="VP animation" />
+            <PeopleCard imageSrc="/images/christina-wocintechchat-com-0Zx1bDv5BNY-unsplash.png" name="Isabelle" position="VP communication" />
           </div>
         </section>
 
@@ -75,7 +76,7 @@ const Page = () => {
                 <div>Message envoyé !</div>
                 <p>
                   Merci pour votre message, nous tâcherons de vous répondre dans
-                  les plus brefs délais
+                  les plus brefs délais.
                 </p>
               </div>
             }
@@ -102,8 +103,8 @@ const Page = () => {
                     imageSrc={last.cover}
                     title={last.title}
                     date={new Date(last.date)}
-                    small
                     label={last.type}
+                    small
                   />
                 </div>
               )}
@@ -115,27 +116,27 @@ const Page = () => {
           <address>45 avenue de la République, 75000 Paris</address>
           <div>01 23 45 67 89</div>
           <div>contact@77events.com</div>
-          <div>
-            <a target="_blank" rel="noreferrer" href="https://www.twitch.tv/">
+          <div className="SocialIcons">
+            <a href="https://www.twitch.tv/" target="_blank" rel="noreferrer" aria-label="Twitch">
               <Icon name="twitch" />
             </a>
-            <a target="_blank" rel="noreferrer" href="https://www.facebook.com/">
+            <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">
               <Icon name="facebook" />
             </a>
-            <a target="_blank" rel="noreferrer" href="https://twitter.com/">
+            <a href="https://twitter.com/" target="_blank" rel="noreferrer" aria-label="Twitter">
               <Icon name="twitter" />
             </a>
-            <a target="_blank" rel="noreferrer" href="https://www.youtube.com/">
+            <a href="https://www.youtube.com/" target="_blank" rel="noreferrer" aria-label="YouTube">
               <Icon name="youtube" />
             </a>
           </div>
         </div>
+
         <div className="col description">
           <Logo size="large" />
           <p>
-            Une agence événementielle propose des prestations de service spécialisées dans la conception
-            et l&apos;organisation de divers événements tels que des événements festifs, des manifestations sportives 
-            et culturelles, des événements professionnels.
+            Une agence événementielle propose des prestations spécialisées dans la conception
+            et l&apos;organisation d&apos;événements festifs, culturels ou professionnels.
           </p>
         </div>
       </footer>

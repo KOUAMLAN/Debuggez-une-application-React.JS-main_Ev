@@ -2,21 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
 
-const PeopleCard = ({ name, role, imageSrc }) => (
+const PeopleCard = ({ name, position, imageSrc }) => (
   <div className="PeopleCard">
-    <div className="PeopleCard__imageContainer">
-      <img src={imageSrc} alt="" data-testid="card-image-testid" />
-    </div>
-    <div className="PeopleCard__descriptionContainer">
-      <div className="PeopleCard__name">{name}</div>
-      <div className="PeopleCard__position">{role}</div>
-    </div>
+    <img
+      src={imageSrc}
+      alt={name} // alt dynamique basé sur "name"
+      data-testid="card-image-testid"
+      className="PeopleCard__image"
+    />
+    <div data-testid="people-name" className="PeopleCard__name">{name}</div>
+    <div data-testid="people-position" className="PeopleCard__position">{position}</div>
   </div>
 );
 
 PeopleCard.propTypes = {
   name: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired,
+  position: PropTypes.string.isRequired,
   imageSrc: PropTypes.string.isRequired,
 };
 

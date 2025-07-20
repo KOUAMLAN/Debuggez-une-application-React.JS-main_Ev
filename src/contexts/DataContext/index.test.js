@@ -1,23 +1,54 @@
-// src/contexts/DataContext/index.test.js
+import { render, screen } from "@testing-library/react";
+import { DataProvider, api, useData } from "./index";
 
-import { DataContext, useData } from "./DataContext";
-import { renderHook } from "@testing-library/react";
-import { useContext } from "react";
-
-//  Vérifie que DataContext est bien un context React
-describe("DataContext", () => {
-  it("should be defined", () => {
-    expect(DataContext).toBeDefined();
-  });
-
-  it("useData should return the correct context value", () => {
-    const testValue = { test: "value" };
-
-    const wrapper = ({ children }) => (
-      <DataContext.Provider value={testValue}>{children}</DataContext.Provider>
+describe("When a data context is created", () => {
+  it("a call is executed on the events.json file", async () => {
+    api.loadData = jest.fn().mockReturnValue({ result: "ok" });
+    const Component = () => {
+      const { data } = useData();
+      return <div>{data?.result}</div>;
+    };
+    render(
+      <DataProvider>
+        <Component />
+      </DataProvider>
     );
+    const dataDisplayed = await screen.findByText("ok");
+    expect(dataDisplayed).toBeInTheDocument();
+  });
+  describe("and the events call failed", () => {
+    it("the error is dispatched", async () => {
+      window.console.error = jest.fn();
+      api.loadData = jest.fn().mockRejectedValue("error on calling events");
 
-    const { result } = renderHook(() => useData(), { wrapper });
-    expect(result.current).toEqual(testValue);
+      const Component = () => {
+        const { error } = useData();
+        return <div>{error}</div>;
+      };
+      render(
+        <DataProvider>
+          <Component />
+        </DataProvider>
+      );
+      const dataDisplayed = await screen.findByText("error on calling events");
+      expect(dataDisplayed).toBeInTheDocument();
+    });
+  });
+  it("api.loadData", () => {
+    window.console.error = jest.fn();
+    global.fetch = jest.fn().mockResolvedValue(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ rates: { CAD: 1.42 } }),
+      })
+    );
+    const Component = () => {
+      const { error } = useData();
+      return <div>{error}</div>;
+    };
+    render(
+      <DataProvider>
+        <Component />
+      </DataProvider>
+    );
   });
 });

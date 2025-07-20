@@ -3,30 +3,30 @@ import { render, screen } from "@testing-library/react";
 import PeopleCard from "./index";
 
 describe("When a people card is created", () => {
-  it("displays image with alt value", () => {
+  it("an image is display with alt value", () => {
+    render(
+      <PeopleCard
+        imageSrc="http://src-image"
+        name="test name"
+        position="test position"
+      />
+    );
+
+    const imageElement = screen.getByTestId("card-image-testid");
+    expect(imageElement).toBeInTheDocument();
+    expect(imageElement.alt).toEqual("test name"); // ✅ corrigé ici
+  });
+
+  it("name and position are displayed", () => {
     render(
       <PeopleCard
         imageSrc="/image.jpg"
-        name="test name"
-        role="test role"
+        name="Jane Doe"
+        position="Directrice"
       />
     );
 
-    const image = screen.getByTestId("card-image-testid");
-    expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute("src", "/image.jpg");
-  });
-
-  it("displays name and role correctly", () => {
-    render(
-      <PeopleCard
-        imageSrc="/example.png"
-        name="Samira"
-        role="CEO"
-      />
-    );
-
-    expect(screen.getByText("Samira")).toBeInTheDocument();
-    expect(screen.getByText("CEO")).toBeInTheDocument();
+    expect(screen.getByTestId("people-name")).toHaveTextContent("Jane Doe");
+    expect(screen.getByTestId("people-position")).toHaveTextContent("Directrice");
   });
 });
