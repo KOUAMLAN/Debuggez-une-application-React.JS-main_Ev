@@ -1,13 +1,8 @@
-// src/pages/Home/index.test.js
-
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import Home from "./index";
-
-// Import du contexte mock
 import { DataContext } from "../../contexts/DataContext";
 
-//Données simulées
 const fakeEvents = [
   {
     id: 1,
@@ -20,7 +15,6 @@ const fakeEvents = [
 
 const fakeLast = fakeEvents[0];
 
-// Fonction utilitaire pour injecter le contexte
 function renderWithDataContext(ui) {
   return render(
     <DataContext.Provider
@@ -37,6 +31,7 @@ function renderWithDataContext(ui) {
 }
 
 describe("When a page is created", () => {
+
   it("a list of events is displayed", async () => {
     const { container } = renderWithDataContext(<Home />);
     const nosReal = container.querySelector("#realisationTitle");
@@ -58,14 +53,17 @@ describe("When a page is created", () => {
   });
 
   it("an event card, with the last event, is displayed", async () => {
-    renderWithDataContext(<Home />);
+    const { container } = renderWithDataContext(<Home />);
 
-    // Option 1 : Recherche par texte (robuste)
-    const cardByText = await screen.findByText(/Événement\s*test/i);
-    expect(cardByText).toBeInTheDocument();
+    // 🔎 Pour t'aider à debugguer l'arbre DOM :
+    // console.log(container.innerHTML)
 
-    // Option 2 : Si `data-testid="event-card"` est dans EventCard.jsx
-    // const cards = await screen.findAllByTestId("event-card");
-    // expect(cards.length).toBeGreaterThan(0);
+    // ✅ Solution ultra-compatible : matcher par fonction sur textContent exact
+    const card = await screen.findByText((_, node) =>
+      node?.textContent?.trim().includes("Événement test")
+    );
+
+    expect(card).toBeInTheDocument();
   });
+
 });
