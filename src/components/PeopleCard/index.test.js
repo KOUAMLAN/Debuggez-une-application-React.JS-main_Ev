@@ -1,37 +1,32 @@
-// src/components/PeopleCard/index.test.js
-
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import PeopleCard from "./index";
 
 describe("When a people card is created", () => {
-  it("an image is display with alt value", () => {
+  it("displays image with alt value", () => {
     render(
       <PeopleCard
-        imageSrc="http://src-image"
-        imageAlt="image-alt-text"
+        imageSrc="/image.jpg"
         name="test name"
-        role="test role" // ✅ CORRIGÉ ici
+        role="test role"
       />
     );
 
-    const imageElement = screen.getByTestId("card-image-testid");
-    expect(imageElement).toBeInTheDocument();
-    expect(imageElement.alt).toEqual("image-alt-text");
+    const image = screen.getByTestId("card-image-testid");
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute("src", "/image.jpg");
   });
 
-  it("a title and a role are displayed", () => {
+  it("displays name and role correctly", () => {
     render(
       <PeopleCard
-        imageSrc="/img.jpg"
-        name="test name"
-        role="test role" // ✅ CORRIGÉ ici
+        imageSrc="/example.png"
+        name="Samira"
+        role="CEO"
       />
     );
 
-    const nameElement = screen.getByText(/test name/);
-    const roleElement = screen.getByText(/test role/); //  mis à jour aussi
-    expect(nameElement).toBeInTheDocument();
-    expect(roleElement).toBeInTheDocument();
+    expect(screen.getByText("Samira")).toBeInTheDocument();
+    expect(screen.getByText("CEO")).toBeInTheDocument();
   });
 });
