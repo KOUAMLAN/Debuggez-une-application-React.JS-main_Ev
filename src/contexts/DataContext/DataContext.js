@@ -2,8 +2,8 @@
 
 import { createContext, useContext } from "react";
 
-// Création du contexte
+// Export nommé du contexte
 export const DataContext = createContext();
 
-// Hook d'accès aux données du contexte
+// Hook pour utiliser le contexte depuis les composants
 export const useData = () => useContext(DataContext);
