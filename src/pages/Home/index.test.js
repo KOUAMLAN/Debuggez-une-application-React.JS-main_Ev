@@ -1,12 +1,13 @@
-/ src/pages/Home/index.test.js
+// src/pages/Home/index.test.js
+
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import Home from "./index";
 
-// ✅ Utilise l'index.js pour accéder à DataContext
+// On récupère le contexte exporté depuis index.js
 import { DataContext } from "../../contexts/DataContext";
 
-// Données factices pour injecter dans le contexte
+// Données de test simulées
 const fakeEvents = [
   {
     id: 1,
@@ -18,18 +19,28 @@ const fakeEvents = [
 ];
 const fakeLast = fakeEvents[0];
 
+// Fonction utilitaire pour tester avec le contexte
 function renderWithDataContext(ui) {
   return render(
-    <DataContext.Provider value={{ events: fakeEvents, last: fakeLast }}>
+    <DataContext.Provider
+      value={{
+        events: fakeEvents,
+        last: fakeLast,
+        data: { events: fakeEvents },
+        error: null,
+      }}
+    >
       {ui}
     </DataContext.Provider>
   );
 }
 
+// === TESTS ===
 describe("When a page is created", () => {
   it("a list of events is displayed", async () => {
     const { container } = renderWithDataContext(<Home />);
     const nosReal = container.querySelector("#realisationTitle");
+
     expect(nosReal.innerHTML).toEqual("Nos réalisations");
 
     const events = container.querySelector("#events");
@@ -51,8 +62,8 @@ describe("When a page is created", () => {
 
   it("an event card, with the last event, is displayed", async () => {
     renderWithDataContext(<Home />);
-    const eventCardElements = await screen.findAllByTestId("event-card");
-    expect(eventCardElements.length).toBeGreaterThan(0);
+    const eventCards = await screen.findAllByTestId("event-card");
+    expect(eventCards.length).toBeGreaterThan(0);
     await screen.findByText("Événement test");
   });
 });

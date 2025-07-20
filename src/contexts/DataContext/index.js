@@ -61,3 +61,5 @@ DataProvider.propTypes = {
 export const useData = () => useContext(DataContext);
 
 export default DataContext;
+// src/contexts/DataContext/index.js
+export * from "./DataContext";
