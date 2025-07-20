@@ -1,5 +1,8 @@
+// src/pages/Home/index.test.js
+
 import { fireEvent, render, screen } from "@testing-library/react";
 import Home from "./index";
+// Optionnel : mock du contexte de données (exemple si tu utilises Recoil/Context)
 
 describe("When Form is created", () => {
   it("a list of fields card is displayed", async () => {
@@ -24,16 +27,16 @@ describe("When Form is created", () => {
       await screen.findByText("Message envoyé !", {}, { timeout: 3000 });
     });
   });
-
 });
 
 // Ajout de tests d'intégration
 describe("When a page is created", () => {
   it("a list of events is displayed", async () => {
     const { container } = render(<Home />);
-    const nosReal = await container.querySelector("#realisationTitle");
+    const nosReal = container.querySelector("#realisationTitle");
     expect(nosReal.innerHTML).toEqual("Nos réalisations");
-    const events = await container.querySelector("#events");
+    // correction : div#events doit maintenant exister !
+    const events = container.querySelector("#events");
     expect(events).toBeInTheDocument();
   });
 
@@ -44,21 +47,19 @@ describe("When a page is created", () => {
     await screen.findByText("Isabelle");
   });
 
-  it("a footer is displayed", async () => {
+  it("a footer is displayed", () => {
     render(<Home />);
     const footer = screen.getByTestId("footer");
     expect(footer).toBeInTheDocument();
   });
 
   it("an event card, with the last event, is displayed", async () => {
-    // test implementation
     render(<Home />);
-    setTimeout(() => {
-      () => {
-        const { last } = useData();
-        screen.findByTestId("event-card");
-        screen.findByText(last.title);
-      };
-    }, 100);
+    // On attend que l'event-card apparaisse (peut être plusieurs !)
+    // On teste juste la présence de l'event-card
+    const eventCardElements = await screen.findAllByTestId("event-card");
+    expect(eventCardElements.length).toBeGreaterThan(0);
+    // Optionnel : tester un titre si tu mocks le DataContext pour mettre une valeur prévisible à `last.title`
+    // await screen.findByText("NomDeLEventMocké");
   });
 });
