@@ -1,9 +1,8 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import Home from "./index";
-import { DataContext } from "../../contexts/DataContext";
+import DataContext from "../../contexts/DataContext"; // ✅ Corrigé ici
 
-// 🔧 Données pour test
 const fakeEvents = [
   {
     id: 1,
@@ -16,7 +15,6 @@ const fakeEvents = [
 
 const fakeLast = fakeEvents[0];
 
-// Helper render with contexte
 function renderWithDataContext(component) {
   return render(
     <DataContext.Provider
@@ -35,7 +33,7 @@ function renderWithDataContext(component) {
 describe("When a page is created", () => {
   it("a list of events is displayed", async () => {
     renderWithDataContext(<Home />);
-    
+
     const title = await screen.findByRole("heading", { name: "Nos réalisations" });
     expect(title).toBeInTheDocument();
 
