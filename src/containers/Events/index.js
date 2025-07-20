@@ -13,37 +13,42 @@ const EventList = () => {
   const [type, setType] = useState();
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Liste des événements filtrés selon le type sélectionné
   const eventsFiltered = !type
     ? data?.events || []
-    : data?.events.filter(event => event.type === type) || [];
+    : (data?.events || []).filter(event => event.type === type);
 
+  // Nombres de pages total
   const totalPages = Math.ceil(eventsFiltered.length / PER_PAGE);
 
+  // Index de pagination
   const startIndex = (currentPage - 1) * PER_PAGE;
   const endIndex = startIndex + PER_PAGE;
   const eventsOnPage = eventsFiltered.slice(startIndex, endIndex);
 
+  // Gérer le changement de type (filtre)
   const changeType = (evtType) => {
     setCurrentPage(1);
     setType(evtType);
   };
 
-  const typeList = new Set(data?.events.map((event) => event.type));
+  // Générer la liste des types d'événements
+  const typeList = data?.events ? Array.from(new Set(data.events.map(event => event.type))) : [];
 
   return (
     <>
       {error && <div>An error occured</div>}
-      {data === null
-        ? "loading"
+      {!data
+        ? <div>loading...</div>
         : (
           <>
             <h3 className="SelectTitle">Catégories</h3>
             <Select
-              selection={Array.from(typeList)}
+              selection={typeList}
               onChange={value => value ? changeType(value) : changeType(null)}
             />
             <div id="events" className="ListContainer">
-              {eventsOnPage.map((event) => (
+              {eventsOnPage.map(event => (
                 <Modal key={event.id} Content={<ModalEvent event={event} />}>
                   {({ setIsOpened }) => (
                     <EventCard
@@ -58,9 +63,9 @@ const EventList = () => {
               ))}
             </div>
             <div className="Pagination">
-              {[...Array(totalPages)].map((_, n) => (
+              {Array.from({ length: totalPages }).map((_, n) => (
                 <a
-                  key={n}
+               key={`page-${n + 1}`}
                   href="#events"
                   className={n + 1 === currentPage ? "active" : ""}
                   onClick={() => setCurrentPage(n + 1)}
@@ -76,3 +81,4 @@ const EventList = () => {
   );
 };
 
+export default EventList;
