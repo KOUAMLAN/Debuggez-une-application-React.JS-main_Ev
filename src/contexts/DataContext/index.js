@@ -20,7 +20,7 @@ export const api = {
 export const DataProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
-  // Utilisation de useMemo pour afficher le dernier évènement (last) l.49.
+
   const last = useMemo(() => {
     if (!data) return null;
     return data.events?.reduce((mostRecent, event) => {
@@ -28,6 +28,7 @@ export const DataProvider = ({ children }) => {
       return new Date(mostRecent.date) > new Date(event.date) ? mostRecent : event;
     });
   }, [data]);
+
   const getData = useCallback(async () => {
     try {
       setData(await api.loadData());
@@ -35,19 +36,15 @@ export const DataProvider = ({ children }) => {
       setError(err);
     }
   }, []);
+
   useEffect(() => {
-    if (data) return;
-    getData();
-  });
-  
+    if (!data) getData();
+  }, [data, getData]);
+
   return (
     <DataContext.Provider
       // eslint-disable-next-line react/jsx-no-constructed-context-values
-      value={{
-        data,
-        error,
-        last, // ajout de la value "last".
-      }}
+      value={{ data, error, last }}
     >
       {children}
     </DataContext.Provider>
@@ -56,10 +53,8 @@ export const DataProvider = ({ children }) => {
 
 DataProvider.propTypes = {
   children: PropTypes.node.isRequired,
-}
+};
 
-export const useData = () => useContext(DataContext);
+export const useData = () => useContext(DataContext); // ✅ export unique ici
 
 export default DataContext;
-// src/contexts/DataContext/index.js
-export * from "./DataContext";
