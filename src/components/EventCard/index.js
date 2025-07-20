@@ -1,4 +1,4 @@
-// src/components/EventCard/index.jsx
+// src/components/EventCard/index.js
 
 import PropTypes from "prop-types";
 import { getMonth } from "../../helpers/Date";
@@ -13,7 +13,6 @@ const EventCard = ({
   small = false,
   ...props
 }) => (
-  // ✅ correction ici : data-testid="event-card"
   <div
     data-testid="event-card"
     className={`EventCard${small ? " EventCard--small" : ""}`}
