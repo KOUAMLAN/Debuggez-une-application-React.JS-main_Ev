@@ -5,6 +5,7 @@ import { render, screen } from "@testing-library/react";
 import Home from "./index";
 import { DataContext } from "../../contexts/DataContext";
 
+// Mock d'événement avec toutes les données nécessaires
 const fakeEvents = [
   {
     id: 1,
@@ -17,6 +18,7 @@ const fakeEvents = [
 
 const fakeLast = fakeEvents[0];
 
+// Rendu du composant avec le contexte simulé
 function renderWithDataContext(ui) {
   return render(
     <DataContext.Provider
@@ -54,7 +56,11 @@ describe("When a page is created", () => {
   });
 
   it("an event card, with the last event, is displayed", async () => {
-    renderWithDataContext(<Home />);
+    const { container } = renderWithDataContext(<Home />);
+
+    //  Debug visibilité du DOM rendu
+    console.log(container.innerHTML); // Supprime cette ligne une fois le test vert 
+
     const cards = await screen.findAllByTestId("event-card");
     expect(cards.length).toBeGreaterThan(0);
   });
